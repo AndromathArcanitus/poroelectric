@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH -J poroelectric3
+#SBATCH -o par_result2.out
+#SBATCH -e par_err2.err
+#SBATCH -n 1
+#SBATCH --ntasks-per-node=8
+#SBATCH -p standard-mem-s
+#SBATCH -t 10
+#SBATCH --exclusive
+
+# update environment
+
+srun ./poroelectric3
