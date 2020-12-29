@@ -24,7 +24,7 @@ kappa0 = 1/(3*pi*pi)
 #kappa0 = 1
 
 T = 1.0 # final time
-num_steps = 10 # number of time steps
+num_steps = 160 # number of time steps
 dt = T / num_steps # time step size
 
 # Create mesh and define function space
@@ -140,7 +140,7 @@ t = 0
 for nn in range(num_steps):
 
     # Update current time
-    t += 0.1
+    t += 0.00625
     E_ex.t = t
     H_ex.t = t
     J.t = t
