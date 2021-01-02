@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J poroelectric3
+#SBATCH -J poroelectric
 #SBATCH -o results.txt
 #SBATCH -e errors.txt
 #SBATCH -n 1
@@ -10,4 +10,4 @@
 
 # update environment
 
-srun ./poroelectric
+srun poroelectric.py
