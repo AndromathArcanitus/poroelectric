@@ -10,6 +10,7 @@ from ufl import nabla_div
 import numpy as np
 #import matplotlib.pyplot as plt
 #from mpl_toolkits.mplot3d import Axes3D
+from dolfinx import DirichletBC, Function, FunctionSpace, UnitCubeMesh
 
 # Definition of constants and parameters
 pi = 3.14159265358979323846
