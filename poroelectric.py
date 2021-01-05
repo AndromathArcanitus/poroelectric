@@ -11,6 +11,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 #from mpl_toolkits.mplot3d import Axes3D
 from dolfinx import DirichletBC, Function, FunctionSpace, UnitCubeMesh
+from mpi4py import MPI
 
 # Definition of constants and parameters
 pi = 3.14159265358979323846
@@ -31,7 +32,7 @@ dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(12, 12, 12)
+mesh = UnitCubeMesh(MPI.COMM_WORLD, 12, 12, 12)
 #mesh = UnitCubeMesh(10, 10, 10)
 
 # Build function space
