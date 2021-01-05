@@ -12,6 +12,7 @@ import numpy as np
 #from mpl_toolkits.mplot3d import Axes3D
 
 # Definition of constants and parameters
+pi = 3.14159265358979323846
 epsilon0 = 1
 sigma0 = 2*pi*pi
 L0 = 0.5
