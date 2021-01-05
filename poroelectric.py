@@ -4,8 +4,8 @@
 #      -lambda grad div u     - G div grad u  + alpha p = 0
 # d/dt(c p + alpha div u) + L div E - kappa laplacian p = 0
 
-# from fenics import *
-from dolfin import *
+from ffcx import *
+from dolfinx import *
 from ufl import nabla_div
 import numpy as np
 import matplotlib.pyplot as plt
