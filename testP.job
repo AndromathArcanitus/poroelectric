@@ -4,6 +4,7 @@
 #SBATCH -e errors.txt
 #SBATCH -n 1
 #SBATCH --ntasks-per-node=8
+#SBATCH --mem=250G
 #SBATCH -p standard-mem-s
 #SBATCH -t 10
 #SBATCH --exclusive
