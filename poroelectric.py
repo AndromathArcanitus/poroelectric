@@ -30,7 +30,7 @@ dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(18, 18, 18)
+mesh = UnitCubeMesh(9, 9, 9)
 #mesh = UnitCubeMesh(10, 10, 10)
 
 # Build function space
