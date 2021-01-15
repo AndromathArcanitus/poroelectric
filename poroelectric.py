@@ -117,7 +117,8 @@ c0 = Constant(c0)
 kappa0 = Constant(kappa0)
 
 # Define initial value
-bfU_n = project(U_0, W)
+#bfU_n = project(U_0, W)
+bfU_n = interpolate(U_0, W)
 E_n, H_n, bfu_n, p_n = split(bfU_n)
 
 # Define variational problem
@@ -151,7 +152,8 @@ for nn in range(num_steps):
     g.t = t
 
     # Solve variational problem
-    solve(a == L, bfU, bc)
+    #solve(a == L, bfU, bc)
+    solve(a == L, bfU, bc, solver_parameters = {'linear_solver': 'mumps'})
 
     Eh, Hh, Uh, ph = bfU.split()
     error_L21 = errornorm(E_ex, Eh, norm_type = 'l2')
