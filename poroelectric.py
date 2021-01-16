@@ -25,17 +25,17 @@ kappa0 = 1/(3*pi*pi)
 #kappa0 = 1
 
 T = 1.0 # final time
-num_steps = 80 # number of time steps
+num_steps = 160 # number of time steps
 dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(24, 24, 24)
+mesh = UnitCubeMesh(12, 12, 12)
 #mesh = UnitCubeMesh(10, 10, 10)
 
 # Build function space
-D1 = FiniteElement("N1curl", mesh.ufl_cell(), 1)
-B1 = FiniteElement("RT", mesh.ufl_cell(), 1)
+D1 = FiniteElement("N1curl", mesh.ufl_cell(), 2)
+B1 = FiniteElement("RT", mesh.ufl_cell(), 2)
 V = VectorElement("Lagrange", mesh.ufl_cell(), 1)
 Q = FiniteElement("Lagrange", mesh.ufl_cell(), 1)
 element = MixedElement([D1, B1, V, Q])
@@ -142,7 +142,7 @@ t = 0
 for nn in range(num_steps):
 
     # Update current time
-    t += 0.0125
+    t += 0.00625
     E_ex.t = t
     H_ex.t = t
     J.t = t
