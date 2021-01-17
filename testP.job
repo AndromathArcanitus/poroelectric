@@ -4,8 +4,8 @@
 #SBATCH -e errors.txt
 #SBATCH -n 1
 #SBATCH --ntasks-per-node=8
-#SBATCH -p standard-mem-s --mem=250G
-#SBATCH -t 10
+#SBATCH -p standard-mem-m --mem=250G
+
 #SBATCH --exclusive
 
 # update environment
