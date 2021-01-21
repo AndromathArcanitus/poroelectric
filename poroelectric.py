@@ -32,6 +32,7 @@ dt = T / num_steps # time step size
 # Load mesh
 mesh = UnitCubeMesh(24, 24, 24)
 #mesh = UnitCubeMesh(10, 10, 10)
+print('numOfCells', mesh.num_cells())
 
 # Build function space
 D1 = FiniteElement("N1curl", mesh.ufl_cell(), 1)
@@ -154,6 +155,8 @@ for nn in range(num_steps):
     # Solve variational problem
     #solve(a == L, bfU, bc)
     solve(a == L, bfU, bc, solver_parameters = {'linear_solver': 'mumps'})
+    dofU = len(bfU.vector())
+    print('size', dofU)
 
     Eh, Hh, Uh, ph = bfU.split()
     #error_L21 = errornorm(E_ex, Eh, norm_type = 'l2')
