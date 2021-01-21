@@ -30,13 +30,13 @@ dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(24, 24, 24)
+mesh = UnitCubeMesh(12, 12, 12)
 #mesh = UnitCubeMesh(10, 10, 10)
 print('numOfCells', mesh.num_cells())
 
 # Build function space
-D1 = FiniteElement("N1curl", mesh.ufl_cell(), 1)
-B1 = FiniteElement("RT", mesh.ufl_cell(), 1)
+D1 = FiniteElement("N1curl", mesh.ufl_cell(), 2)
+B1 = FiniteElement("RT", mesh.ufl_cell(), 2)
 V = VectorElement("Lagrange", mesh.ufl_cell(), 1)
 Q = FiniteElement("Lagrange", mesh.ufl_cell(), 1)
 element = MixedElement([D1, B1, V, Q])
