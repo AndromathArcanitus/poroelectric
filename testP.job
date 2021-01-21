@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J poroelectric
-#SBATCH -o results118.txt
+#SBATCH -o temp.txt
 #SBATCH -e errors.txt
 #SBATCH -n 1
 #SBATCH --ntasks-per-node=8
