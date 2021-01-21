@@ -25,12 +25,12 @@ kappa0 = 1/(3*pi*pi)
 #kappa0 = 1
 
 T = 1.0 # final time
-num_steps = 1 # number of time steps
+num_steps = 360 # number of time steps
 dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(12, 12, 12)
+mesh = UnitCubeMesh(18, 18, 18)
 #mesh = UnitCubeMesh(10, 10, 10)
 print('numOfCells', mesh.num_cells())
 
@@ -143,7 +143,7 @@ t = 0
 for nn in range(num_steps):
 
     # Update current time
-    t += 0.01667
+    t += 0.002778
     E_ex.t = t
     H_ex.t = t
     J.t = t
@@ -159,27 +159,27 @@ for nn in range(num_steps):
     print('size', dofU)
 
     Eh, Hh, Uh, ph = bfU.split()
-    #error_L21 = errornorm(E_ex, Eh, norm_type = 'l2')
-    #error_L22 = errornorm(H_ex, Hh, norm_type = 'l2')
-    #error_L23 = errornorm(u_D, Uh, norm_type = 'l2')
-    #error_L24 = errornorm(p_D, ph, norm_type = 'l2')
-    #ENorm = sqrt(assemble(inner(E_ex, E_ex)*dx(mesh)))
-    #HNorm = sqrt(assemble(inner(H_ex, H_ex)*dx(mesh)))
-    #UNorm = sqrt(assemble(inner(u_D, u_D)*dx(mesh)))
-    #pNorm = sqrt(assemble(inner(p_D, p_D)*dx(mesh)))
-    #rel_err_21 = error_L21/ENorm
-    #rel_err_22 = error_L22/HNorm
-    #rel_err_23 = error_L23/UNorm
-    #rel_err_24 = error_L24/pNorm
-    #print('At t = ', t)
-    #print('||E - E_ex|| = ', error_L21)
-    #print('||H - H_ex|| = ', error_L22)
-    #print('||U - U_ex|| = ', error_L23)
-    #print('||p - p_ex|| = ', error_L24)
-    #print('relative error ||E - E_ex||/||E|| = ', rel_err_21)
-    #print('relative error ||H - H_ex||/||H|| = ', rel_err_22)
-    #print('relative error ||U - U_ex||/||U|| = ', rel_err_23)
-    #print('relative error ||p - p_ex||/||p|| = ', rel_err_24)
+    error_L21 = errornorm(E_ex, Eh, norm_type = 'l2')
+    error_L22 = errornorm(H_ex, Hh, norm_type = 'l2')
+    error_L23 = errornorm(u_D, Uh, norm_type = 'l2')
+    error_L24 = errornorm(p_D, ph, norm_type = 'l2')
+    ENorm = sqrt(assemble(inner(E_ex, E_ex)*dx(mesh)))
+    HNorm = sqrt(assemble(inner(H_ex, H_ex)*dx(mesh)))
+    UNorm = sqrt(assemble(inner(u_D, u_D)*dx(mesh)))
+    pNorm = sqrt(assemble(inner(p_D, p_D)*dx(mesh)))
+    rel_err_21 = error_L21/ENorm
+    rel_err_22 = error_L22/HNorm
+    rel_err_23 = error_L23/UNorm
+    rel_err_24 = error_L24/pNorm
+    print('At t = ', t)
+    print('||E - E_ex|| = ', error_L21)
+    print('||H - H_ex|| = ', error_L22)
+    print('||U - U_ex|| = ', error_L23)
+    print('||p - p_ex|| = ', error_L24)
+    print('relative error ||E - E_ex||/||E|| = ', rel_err_21)
+    print('relative error ||H - H_ex||/||H|| = ', rel_err_22)
+    print('relative error ||U - U_ex||/||U|| = ', rel_err_23)
+    print('relative error ||p - p_ex||/||p|| = ', rel_err_24)
 
     # Update previous solution
     bfU_n.assign(bfU)
