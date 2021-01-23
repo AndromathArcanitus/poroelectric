@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH -J poroelectric
-#SBATCH -o temp.txt
+#SBATCH -o results224.txt
 #SBATCH -e errors.txt
 #SBATCH -n 1
-#SBATCH --ntasks-per-node=8
-#SBATCH -p standard-mem-s --mem=250G
+#SBATCH --ntasks-per-node=10
+#SBATCH -p standard-mem-s --mem=750G
 
 #SBATCH --exclusive
 
