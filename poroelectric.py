@@ -25,12 +25,12 @@ kappa0 = 1/(3*pi*pi)
 #kappa0 = 1
 
 T = 1.0 # final time
-num_steps = 40 # number of time steps
+num_steps = 640 # number of time steps
 dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(6, 6, 6)
+mesh = UnitCubeMesh(24, 24, 24)
 #mesh = UnitCubeMesh(10, 10, 10)
 print('numOfCells', mesh.num_cells())
 
@@ -143,7 +143,7 @@ t = 0
 for nn in range(num_steps):
 
     # Update current time
-    t += 0.025
+    t += 0.0015625
     E_ex.t = t
     H_ex.t = t
     J.t = t
