@@ -25,62 +25,49 @@ kappa0 = 1/(3*pi*pi)
 #kappa0 = 1
 
 T = 1.0 # final time
-num_steps = 640 # number of time steps
+num_steps = 160 # number of time steps
 dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(24, 24, 24)
+mesh = UnitCubeMesh(12, 12, 12)
 #mesh = UnitCubeMesh(10, 10, 10)
 print('numOfCells', mesh.num_cells())
 
 # Build function space
 D1 = FiniteElement("N1curl", mesh.ufl_cell(), 2)
 B1 = FiniteElement("RT", mesh.ufl_cell(), 2)
-V = VectorElement("Lagrange", mesh.ufl_cell(), 1)
-Q = FiniteElement("Lagrange", mesh.ufl_cell(), 1)
+V = VectorElement("Lagrange", mesh.ufl_cell(), 2)
+Q = FiniteElement("Lagrange", mesh.ufl_cell(), 2)
 element = MixedElement([D1, B1, V, Q])
 W = FunctionSpace(mesh, element)
 
 # Exact solutions, boundary conditions and known functions
-E_ex = Expression(('sin(pi*x[1])*sin(pi*x[2])*exp(-t)', 'sin(pi*x[2])*sin(pi*x[0])*exp(-t)', \
-                   'sin(pi*x[0])*sin(pi*x[1])*exp(-t)'), degree = 2, t = 0)
-#E_ex = Expression(('sin(pi*x[1])*sin(pi*x[2])*(1+t)', 'sin(pi*x[2])*sin(pi*x[0])*(1+t)', \
-#                   'sin(pi*x[0])*sin(pi*x[1])*(1+t)'), degree = 2, t = 0)
-#E_ex = Expression(('0', '0', '0'), degree = 2, t = 0)
-H_ex = Expression(('pi*sin(pi*x[0])*(cos(pi*x[1])-cos(pi*x[2]))*exp(-t)', \
-                   'pi*sin(pi*x[1])*(cos(pi*x[2])-cos(pi*x[0]))*exp(-t)', \
-                   'pi*sin(pi*x[2])*(cos(pi*x[0])-cos(pi*x[1]))*exp(-t)'), degree = 2, t = 0)
-#H_ex = Expression(('-pi*sin(pi*x[0])*(cos(pi*x[1])-cos(pi*x[2]))*(t+t*t/2)', \
-#                   '-pi*sin(pi*x[1])*(cos(pi*x[2])-cos(pi*x[0]))*(t+t*t/2)', \
-#                   '-pi*sin(pi*x[2])*(cos(pi*x[0])-cos(pi*x[1]))*(t+t*t/2)'), degree = 2, t = 0)
-#H_ex = Expression(('0', '0', '0'), degree = 2, t = 0)
-J = Expression(('(-1-0.5*pi*cos(pi*x[0]))*sin(pi*x[1])*sin(pi*x[2])*exp(-t)', \
-                '(-1-0.5*pi*cos(pi*x[1]))*sin(pi*x[2])*sin(pi*x[0])*exp(-t)', \
-                '(-1-0.5*pi*cos(pi*x[2]))*sin(pi*x[0])*sin(pi*x[1])*exp(-t)'), degree = 2, t = 0)
-#J = Expression(('0', '0', '0'), degree = 2, t = 0)
-u_D = Expression(('sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*exp(-t)', 'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*exp(-t)', '0'), degree = 2, t = 0)
-#p_D = Expression('0', degree = 2, t = 0)
-#u_D = Expression(('0', '0', '0'), degree = 2, t = 0)
-p_D = Expression('sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*exp(-t)', degree = 2, t = 0)
+E_ex = Expression(('sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*(1+t*t)', 'sin(pi*x[2])*sin(pi*x[0])*sin(pi*x[1])*(1+t*t)', \
+                   'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*(1+t*t)'), degree = 4, t = 0)
+H_ex = Expression(('-pi*sin(pi*x[0])*(cos(pi*x[1])*sin(pi*x[2])-sin(pi*x[1])*cos(pi*x[2]))*(t+t*t*t/3)', \
+                   '-pi*sin(pi*x[1])*(cos(pi*x[2])*sin(pi*x[0])-sin(pi*x[2])*cos(pi*x[0]))*(t+t*t*t/3)', \
+                   '-pi*sin(pi*x[2])*(cos(pi*x[0])*sin(pi*x[1])-sin(pi*x[0])*cos(pi*x[1]))*(t+t*t*t/3)'), degree = 2, t = 0)
 
-f = Expression(('(5*pi*pi*sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2]) - 2*pi*pi*cos(pi*x[0])*cos(pi*x[1])*sin(pi*x[2]) + pi*cos(pi*x[0])*sin(pi*x[1])*sin(pi*x[2]))*exp(-t)', \
-                '(5*pi*pi*sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2]) - 2*pi*pi*cos(pi*x[0])*cos(pi*x[1])*sin(pi*x[2]) + pi*cos(pi*x[1])*sin(pi*x[2])*sin(pi*x[0]))*exp(-t)', \
-                '(-2*pi*pi*cos(pi*x[0])*sin(pi*x[1])*cos(pi*x[2]) - 2*pi*pi*sin(pi*x[0])*cos(pi*x[1])*cos(pi*x[2]) + pi*cos(pi*x[2])*sin(pi*x[0])*sin(pi*x[1]))*exp(-t)'), degree = 2, t = 0)
-g = Expression('(-pi*cos(pi*x[0])*sin(pi*x[1])*sin(pi*x[2]) - pi*sin(pi*x[0])*cos(pi*x[1])*sin(pi*x[2]))*exp(-t)', degree = 2, t = 0)
-#f = Expression(('5*pi*pi*sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*exp(-t) + pi*cos(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*exp(-t)', \
-#                '-2*pi*pi*cos(pi*x[0])*cos(pi*x[1])*sin(pi*x[2])*exp(-t) + pi*cos(pi*x[1])*sin(pi*x[2])*sin(pi*x[0])*exp(-t)', \
-#                '-2*pi*pi*cos(pi*x[0])*sin(pi*x[1])*cos(pi*x[2])*exp(-t) + pi*cos(pi*x[2])*sin(pi*x[0])*sin(pi*x[1])*exp(-t)'), degree = 2, t = 0)
-#g = Expression('-pi*cos(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*exp(-t)', degree = 2, t = 0)
-#f = Expression(('0', '0', '0'), degree = 2, t = 0)
-#g = Expression('0', degree = 2, t = 0)
-U_0 = Expression(('sin(pi*x[1])*sin(pi*x[2])', 'sin(pi*x[2])*sin(pi*x[0])', 'sin(pi*x[0])*sin(pi*x[1])',\
-    'pi*sin(pi*x[0])*(cos(pi*x[1])-cos(pi*x[2]))', 'pi*sin(pi*x[1])*(cos(pi*x[2])-cos(pi*x[0]))', 'pi*sin(pi*x[2])*(cos(pi*x[0])-cos(pi*x[1]))',\
-#U_0 = Expression(('0', '0', '0',\
-#    '0', '0', '0',\
-    'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])', 'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])', '0', \
-#'0', '0', '0', \
-    'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])'), degree = 2)
+J = Expression(('sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*2*(pi*pi*t*t*t/3+t*t+(pi*pi+1)*t+1) + cos(pi*x[0])*(cos(pi*x[1])*sin(pi*x[2]) + cos(pi*x[2])*sin(pi*x[1]))*pi*pi*(t*t*t/3 + t) - cos(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*pi*(t*t+1)', \
+'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*2*(pi*pi*t*t*t/3+t*t+(pi*pi+1)*t+1) + cos(pi*x[1])*(cos(pi*x[2])*sin(pi*x[0]) + cos(pi*x[0])*sin(pi*x[2]))*pi*pi*(t*t*t/3 + t) - cos(pi*x[1])*sin(pi*x[2])*sin(pi*x[0])*pi*(t*t+1)', \
+'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*2*(pi*pi*t*t*t/3+t*t+(pi*pi+1)*t+1) + cos(pi*x[2])*(cos(pi*x[0])*sin(pi*x[1]) + cos(pi*x[1])*sin(pi*x[0]))*pi*pi*(t*t*t/3 + t) - cos(pi*x[2])*sin(pi*x[0])*sin(pi*x[1])*pi*(t*t+1)'), degree = 2, t = 0)
+u_D = Expression(('sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*(1+t*t)', '0', '0'), degree = 2, t = 0)
+p_D = Expression('sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])*(1+t*t)', degree = 2, t = 0)
+
+f = Expression(('(5*pi*pi*sin(pi*x[0]) + pi*cos(pi*x[0]))*sin(pi*x[1])*sin(pi*x[2])*(1+t*t)', \
+                '(-2*pi*pi*cos(pi*x[0]) + pi*sin(pi*x[0]))*cos(pi*x[1])*sin(pi*x[2])*(1+t*t)', \
+                '(-2*pi*pi*cos(pi*x[0]) + pi*sin(pi*x[0]))*sin(pi*x[1])*cos(pi*x[2])*(1+t*t)'), degree = 2, t = 0)
+g = Expression('( (sin(pi*x[0]) + pi*cos(pi*x[0]))*2*t + 6*pi*pi*sin(pi*x[0])*(t*t+1) )\
+                 *sin(pi*x[1])*sin(pi*x[2]) + (cos(pi*x[0])*sin(pi*x[1])*sin(pi*x[2]) + \
+                cos(pi*x[1])*sin(pi*x[2])*sin(pi*x[0]) + cos(pi*x[2])*sin(pi*x[0])*sin(pi*x[1]))*pi*(t*t+1)', degree = 2, t = 0)
+U_0 = Expression(('sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])', 'sin(pi*x[2])*sin(pi*x[0])*sin(pi*x[1])', \
+                   'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])',\
+    '0', '0', '0',\
+    'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])', '0', '0', \
+    #'0', '0', '0', \
+    'sin(pi*x[0])*sin(pi*x[1])*sin(pi*x[2])'), degree = 4)
+
 n = FacetNormal(mesh)
 T_d = Constant((0, 0, 0))
 tol = 1E-14
@@ -96,6 +83,13 @@ bcB = DirichletBC(W.sub(1), Constant((0.0, 0.0, 0.0)), DomainBoundary())
 bcu = DirichletBC(W.sub(2), Constant((0.0, 0.0, 0.0)), DomainBoundary())
 bcp = DirichletBC(W.sub(3), Constant(0.0), boundary)
 bc = [bcD, bcB, bcu, bcp]
+# Define strain and stress
+def epsilon(u):
+    return 0.5*(nabla_grad(u) + nabla_grad(u).T)
+    #return sym(nabla_grad(u))
+
+def sigma(u):
+    return lambda0*nabla_div(u)*Identity(3) + 2*mu0*epsilon(u)
 
 # Define strain and stress
 def epsilon(u):
@@ -143,7 +137,7 @@ t = 0
 for nn in range(num_steps):
 
     # Update current time
-    t += 0.0015625
+    t += 0.00625
     E_ex.t = t
     H_ex.t = t
     J.t = t
