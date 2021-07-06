@@ -14,23 +14,23 @@ import numpy as np
 # Definition of constants and parameters
 #pi = 3.14159265358979323846
 epsilon0 = 1
-sigma0 = 2*pi*pi
-L0 = 0.5
+sigma0 = 2
+L0 = 1
 mu0 = 1
 lambda0 = 2
 G0 = 1
 alpha0 = 1
 c0 = 1
-kappa0 = 1/(3*pi*pi)
+kappa0 = 2
 #kappa0 = 1
 
 T = 1.0 # final time
-num_steps = 160 # number of time steps
+num_steps = 640 # number of time steps
 dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(12, 12, 12)
+mesh = UnitCubeMesh(24, 24, 24)
 #mesh = UnitCubeMesh(10, 10, 10)
 print('numOfCells', mesh.num_cells())
 
@@ -137,7 +137,7 @@ t = 0
 for nn in range(num_steps):
 
     # Update current time
-    t += 0.00625
+    t += 0.0015625
     E_ex.t = t
     H_ex.t = t
     J.t = t
