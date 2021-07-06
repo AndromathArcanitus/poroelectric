@@ -25,13 +25,12 @@ kappa0 = 2
 #kappa0 = 1
 
 T = 1.0 # final time
-num_steps = 640 # number of time steps
+num_steps = 40 # number of time steps
 dt = T / num_steps # time step size
 
 # Create mesh and define function space
 # Load mesh
-mesh = UnitCubeMesh(24, 24, 24)
-#mesh = UnitCubeMesh(10, 10, 10)
+mesh = UnitCubeMesh(6, 6, 6)
 print('numOfCells', mesh.num_cells())
 
 # Build function space
@@ -91,14 +90,6 @@ def epsilon(u):
 def sigma(u):
     return lambda0*nabla_div(u)*Identity(3) + 2*mu0*epsilon(u)
 
-# Define strain and stress
-def epsilon(u):
-    return 0.5*(nabla_grad(u) + nabla_grad(u).T)
-    #return sym(nabla_grad(u))
-
-def sigma(u):
-    return lambda0*nabla_div(u)*Identity(3) + 2*mu0*epsilon(u)
-
 # Define expressions used in variational forms
 dt = Constant(dt)
 epsilon0 = Constant(epsilon0)
@@ -137,7 +128,7 @@ t = 0
 for nn in range(num_steps):
 
     # Update current time
-    t += 0.0015625
+    t += 0.025
     E_ex.t = t
     H_ex.t = t
     J.t = t
