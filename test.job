@@ -1,13 +1,13 @@
 #!/bin/bash
 #SBATCH -J poroelectric
-#SBATCH -o p2122.txt
+#SBATCH -o p2242.txt
 #SBATCH -e errors.txt
-#SBATCH -n 2
+#SBATCH -n 4
 #SBATCH --ntasks-per-node=8
-#SBATCH -p medium-mem-1-m --mem=750G
+#SBATCH -p high-mem-1 --mem=1500G
 
 #SBATCH --exclusive
 
 # update environment
 
-mpirun -np 2 python3 poroelectric.py
+mpirun -np 4 python3 poroelectric.py
