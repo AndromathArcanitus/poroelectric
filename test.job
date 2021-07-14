@@ -3,7 +3,7 @@
 #SBATCH -o p2123.txt
 #SBATCH -e errors.txt
 #SBATCH -n 2
-#SBATCH --ntasks-per-node=10
+#SBATCH --ntasks-per-node=6
 #SBATCH -p high-mem-2 --mem=1500G
 
 #SBATCH --exclusive
