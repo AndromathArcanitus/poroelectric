@@ -4,7 +4,7 @@
 #SBATCH -e errors.txt
 #SBATCH -n 2
 #SBATCH --ntasks-per-node=6
-#SBATCH -hosts=<high-mem-2> --mem=750G
+#SBATCH -p high-mem-1 --mem=1500G
 
 #SBATCH --exclusive
 
