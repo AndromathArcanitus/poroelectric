@@ -1,11 +1,10 @@
 #!/bin/bash
 #SBATCH -J poroelectric
-#SBATCH -o results218.txt
-#SBATCH -e errors.txt
-#SBATCH -n 1
-#SBATCH --ntasks-per-node=10
-#SBATCH -p medium-mem-1-m --mem=750G
-
+#SBATCH -o results2245.txt
+#SBATCH -e errors.tx
+#SBATCH -n 4
+#SBATCH --ntasks-per-node=6
+#SBATCH -p high-mem-1 --mem=1500G
 #SBATCH --exclusive
 
 # update environment
